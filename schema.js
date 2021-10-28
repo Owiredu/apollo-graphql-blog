@@ -23,11 +23,18 @@ const typeDefs = gql`
         message: String!
     }
 
+    type LikeAndUnlikeResponse {
+        status: Int
+        message: String!
+        likesCount: Int!
+        unlikesCount: Int!
+    }
+
     input CreatePostContent {
         title: String!
         body: String!
         image: String
-        author_id: Int!
+        authorId: Int!
         createDate: String!
     }
 
@@ -36,7 +43,15 @@ const typeDefs = gql`
         title: String!
         body: String!
         image: String!
-        author_id: Int!
+        authorId: Int!
+    }
+
+    input DeletePostContent {
+        id: Int!
+    }
+
+    input LikeAndUnlikePostContent {
+        id: Int!
     }
 
     type Comment {
@@ -44,6 +59,31 @@ const typeDefs = gql`
         body: String!
         user: User!
         post: Post!
+    }
+
+    input CreateCommentContent {
+        body: String!
+        userId: Int!
+        postId: Int!
+        createDate: String!
+    }
+
+    input DeleteCommentContent {
+        id: Int!
+    }
+
+    type CommentReply {
+        id: ID!
+        body: String!
+        user: User!
+        comment: Comment!
+    }
+
+    input CommentReplyContent {
+        body: String!
+        userId: Int!
+        commentId: Int!
+        createDate: String!
     }
 
     type Query {
@@ -58,12 +98,12 @@ const typeDefs = gql`
     type Mutation {
         createPost(content: CreatePostContent!): PostResponse!
         updatePost(content: UpdatePostContent!): PostResponse!
-        deletePost: Post
-        likePost: Post
-        unlikePost: Post
-        createComment: Comment
-        deleteComment: Comment
-        replyComment: Comment
+        deletePost(content: DeletePostContent!): PostResponse!
+        likePost(content: LikeAndUnlikePostContent!): LikeAndUnlikeResponse!
+        unlikePost(content: LikeAndUnlikePostContent!): LikeAndUnlikeResponse!
+        createComment(content: CreateCommentContent!): PostResponse!
+        deleteComment(content: DeleteCommentContent!): PostResponse!
+        replyComment(content: CommentReplyContent!): PostResponse!
     }
 `;
 
