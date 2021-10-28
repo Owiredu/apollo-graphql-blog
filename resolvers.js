@@ -5,6 +5,18 @@ const database = new sqlite3.Database("blog.db");
 
 const resolvers = {
     Query: {
+        getPost: (root, args, context, info) => {
+            return new Promise((resolve, reject) => {
+                // raw SQLite query to select from table
+                database.all("SELECT * FROM posts;", function (err, rows) {
+                    if (err) {
+                        reject([]);
+                    }
+                    resolve(rows);
+                });
+            });
+        },
+
         getAllPosts: (root, args, context, info) => {
             return new Promise((resolve, reject) => {
                 // raw SQLite query to select from table

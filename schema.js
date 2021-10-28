@@ -87,12 +87,8 @@ const typeDefs = gql`
     }
 
     type Query {
-        getUser(email: String!): User
         getPost(title: String!): Post
-        getComment(id: ID!): Comment
-        getAllUsers: [User]
         getAllPosts: [Post]
-        getAllComments: [Comment]
     }
 
     type Mutation {
