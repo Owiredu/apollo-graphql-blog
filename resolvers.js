@@ -8,11 +8,11 @@ const resolvers = {
         getPost: (root, args, context, info) => {
             return new Promise((resolve, reject) => {
                 // raw SQLite query to select from table
-                database.all("SELECT * FROM posts;", function (err, rows) {
+                database.get("SELECT * FROM posts;", function (err, row) {
                     if (err) {
                         reject([]);
                     }
-                    resolve(rows);
+                    resolve(row);
                 });
             });
         },
@@ -64,13 +64,13 @@ const resolvers = {
                 // raw SQLite query to select from table
                 const content = args.content;
                 // raw SQLite query to select from table
-                database.all("SELECT title FROM posts WHERE id=?;", [content.id], function (err, rows) {
+                database.get("SELECT title FROM posts WHERE id=?;", [content.id], function (err, row) {
                     if (err) {
                         // reject([]);
                         resolve({ status: 400, message: err.message });
                     }
-                    if (rows) {
-                        const postTitle = rows[0].title;
+                    if (row) {
+                        const postTitle = row.title;
                         database.run("DELETE FROM posts WHERE id=?;", [content.id], function (err, rows) {
                             if (err) {
                                 // reject([]);
@@ -89,15 +89,15 @@ const resolvers = {
             return new Promise((resolve, reject) => {
                 // raw SQLite query to select from table
                 const content = args.content;
-                database.all("SELECT title, likes_count, unlikes_count FROM posts WHERE id=?;", [content.id], function (err, rows) {
+                database.get("SELECT title, likes_count, unlikes_count FROM posts WHERE id=?;", [content.id], function (err, row) {
                     if (err) {
                         // reject([]);
                         resolve({ status: 400, message: err.message });
                     }
-                    if (rows) {
-                        const title = rows[0].title;
-                        const unlikesCount = rows[0].unlikes_count;
-                        const likesCount = rows[0].likes_count + 1;
+                    if (row) {
+                        const title = row.title;
+                        const unlikesCount = row.unlikes_count;
+                        const likesCount = row.likes_count + 1;
                         database.run("UPDATE posts SET likes_count=? WHERE id=?;", [likesCount, content.id], function (err, rows) {
                             if (err) {
                                 // reject([]);
@@ -121,15 +121,15 @@ const resolvers = {
             return new Promise((resolve, reject) => {
                 // raw SQLite query to select from table
                 const content = args.content;
-                database.all("SELECT title, likes_count, unlikes_count FROM posts WHERE id=?;", [content.id], function (err, rows) {
+                database.get("SELECT title, likes_count, unlikes_count FROM posts WHERE id=?;", [content.id], function (err, row) {
                     if (err) {
                         // reject([]);
                         resolve({ status: 400, message: err.message });
                     }
-                    if (rows) {
-                        const title = rows[0].title;
-                        const likesCount = rows[0].likes_count;
-                        const unlikesCount = rows[0].unlikes_count + 1;
+                    if (row) {
+                        const title = row.title;
+                        const likesCount = row.likes_count;
+                        const unlikesCount = row.unlikes_count + 1;
                         database.run("UPDATE posts SET unlikes_count=? WHERE id=?;", [unlikesCount, content.id], function (err, rows) {
                             if (err) {
                                 // reject([]);
@@ -168,12 +168,12 @@ const resolvers = {
                 // raw SQLite query to select from table
                 const content = args.content;
                 // raw SQLite query to select from table
-                database.all("SELECT id FROM comments WHERE id=?;", [content.id], function (err, rows) {
+                database.get("SELECT id FROM comments WHERE id=?;", [content.id], function (err, row) {
                     if (err) {
                         // reject([]);
                         resolve({ status: 400, message: err.message });
                     }
-                    if (rows) {
+                    if (row) {
                         database.run("DELETE FROM comments WHERE id=?;", [content.id], function (err, rows) {
                             if (err) {
                                 // reject([]);
