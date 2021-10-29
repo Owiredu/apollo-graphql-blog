@@ -8,16 +8,16 @@ const typeDefs = gql`
     }
     
     type Post {
-        id: Int!
-        title: String!
-        body: String!
+        id: Int
+        title: String
+        body: String
         image: String
-        likes_count: Int!
-        unlikes_count: Int!
-        author_id: Int!
-        create_date: String!
-        author_name: String!
-        author_email: String!
+        likes_count: Int
+        unlikes_count: Int
+        author_id: Int
+        create_date: String
+        author_name: String
+        author_email: String
     }
 
     type PostResponse {
@@ -92,7 +92,6 @@ const typeDefs = gql`
 
     type Query {
         getPost(title: String!): Post
-        getAllPosts: [Post]
     }
 
     type Mutation {
