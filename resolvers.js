@@ -8,11 +8,19 @@ const resolvers = {
         getPost: (root, args, context, info) => {
             return new Promise((resolve, reject) => {
                 // raw SQLite query to select from table
-                database.get("SELECT * FROM posts;", function (err, row) {
+                const title = args.title;
+                database.get("SELECT * FROM posts WHERE title=?;", [title], function (err, postRow) {
                     if (err) {
-                        reject([]);
+                        reject({});
                     }
-                    resolve(row);
+                    database.get("SELECT name as author_name, email as author_email FROM users WHERE id=?;", [postRow.author_id], function (err, userRow) {
+                        if (err) {
+                            reject({});
+                        }
+                        let finalData = {...postRow, ...userRow};
+                        console.log(finalData);
+                        resolve(finalData);
+                    });
                 });
             });
         },

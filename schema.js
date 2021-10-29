@@ -2,20 +2,22 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
     type User {
-        id: ID!
+        id: Int!
         email: String!
         name: String
-        posts: [Post]
     }
     
     type Post {
-        id: ID!
+        id: Int!
         title: String!
         body: String!
         image: String
-        createDate: String
-        author: User!
-        comments: [Comment]
+        likes_count: Int!
+        unlikes_count: Int!
+        author_id: Int!
+        create_date: String!
+        author_name: String!
+        author_email: String!
     }
 
     type PostResponse {
@@ -26,16 +28,16 @@ const typeDefs = gql`
     type LikeAndUnlikeResponse {
         status: Int
         message: String!
-        likesCount: Int!
-        unlikesCount: Int!
+        likes_count: Int!
+        unlikes_count: Int!
     }
 
     input CreatePostContent {
         title: String!
         body: String!
         image: String
-        authorId: Int!
-        createDate: String!
+        author_id: Int!
+        create_date: String!
     }
 
     input UpdatePostContent {
@@ -43,7 +45,7 @@ const typeDefs = gql`
         title: String!
         body: String!
         image: String!
-        authorId: Int!
+        author_id: Int!
     }
 
     input DeletePostContent {
@@ -55,17 +57,18 @@ const typeDefs = gql`
     }
 
     type Comment {
-        id: ID!
+        id: Int!
         body: String!
-        user: User!
-        post: Post!
+        user_id: Int!
+        post_id: Int!
+        create_date: String!
     }
 
     input CreateCommentContent {
         body: String!
-        userId: Int!
-        postId: Int!
-        createDate: String!
+        user_id: Int!
+        post_id: Int!
+        create_date: String!
     }
 
     input DeleteCommentContent {
@@ -73,17 +76,18 @@ const typeDefs = gql`
     }
 
     type CommentReply {
-        id: ID!
+        id: Int!
         body: String!
-        user: User!
-        comment: Comment!
+        user_id: Int!
+        comment_id: Int!
+        create_date: String!
     }
 
     input CommentReplyContent {
         body: String!
-        userId: Int!
-        commentId: Int!
-        createDate: String!
+        user_id: Int!
+        comment_id: Int!
+        create_date: String!
     }
 
     type Query {
